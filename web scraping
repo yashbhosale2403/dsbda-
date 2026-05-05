@@ -1,0 +1,118 @@
+Got it 👍 — you want **all Python commands split exactly like notebook cells (one by one)** just like your file.
+
+Here it is in **cell-wise format** 👇
+
+---
+
+## 🧩 Cell 1 – Import Libraries
+
+```python
+import bs4
+import requests
+import pandas as pd
+```
+
+---
+
+## 🧩 Cell 2 – Request First Page
+
+```python
+req = requests.get('https://books.toscrape.com/catalogue/page-1.html')
+```
+
+---
+
+## 🧩 Cell 3 – Parse HTML
+
+```python
+soup = bs4.BeautifulSoup(req.text)
+```
+
+---
+
+## 🧩 Cell 4 – Extract Titles (check)
+
+```python
+soup.select('article h3 a')
+```
+
+---
+
+## 🧩 Cell 5 – Extract Paragraph Tags (check ratings + price)
+
+```python
+soup.select('article p')
+```
+
+---
+
+## 🧩 Cell 6 – Create Empty Lists
+
+```python
+title_list = []
+rating_list = []
+price_list = []
+```
+
+---
+
+## 🧩 Cell 7 – Loop Through Pages
+
+```python
+for pg_num in range(1,51):
+    
+    req = requests.get(f'https://books.toscrape.com/catalogue/page-{pg_num}.html')
+    
+    soup_pg = bs4.BeautifulSoup(req.text)
+    
+    for item in soup_pg.select('article h3 a'):
+        title_list.append(item['title'])
+    
+    for n in range(0,60,3):
+        rating_list.append(soup_pg.select('article p')[n]['class'][1])
+    
+    for n in range(1,60,3):
+        price_list.append(soup_pg.select('article p')[n].string.replace('Â£',''))
+```
+
+---
+
+## 🧩 Cell 8 – Create DataFrame
+
+```python
+df = pd.DataFrame({
+    "Title": title_list,
+    "Rating": rating_list,
+    "Price": price_list
+})
+```
+
+---
+
+## 🧩 Cell 9 – Save to CSV
+
+```python
+df.to_csv("books_data.csv", index=False)
+```
+
+---
+
+## 🧩 Cell 10 – Display Data (optional)
+
+```python
+df.head()
+```
+
+---
+
+## ✅ Done
+
+This is **exact same flow as your notebook**, just separated into **cells step-by-step**.
+
+---
+
+If you want, I can also:
+
+* 📄 Convert this into **proper assignment format**
+* 🎤 Give **viva questions + answers**
+* 📊 Add **output screenshots explanation**
